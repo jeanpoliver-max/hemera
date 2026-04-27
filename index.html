@@ -1410,21 +1410,10 @@
           ".hero-content .inline-flex",
           {
             scale: 0.8,
-            opacity: 0,
             duration: 0.8,
             ease: "back.out(1.7)",
           },
           "-=1",
-        )
-        .from(
-          "header",
-          {
-            y: -100,
-            opacity: 0,
-            duration: 1,
-            ease: "power3.out",
-          },
-          "-=0.5",
         );
 
       // Scroll Reveal Animations
@@ -1458,17 +1447,17 @@
 
           if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
             document
-              .querySelector("nav a[href*=" + sectionId + "]")
+              .querySelector(`nav a[href*="${sectionId}"]`)
               ?.classList.add("text-hemera-light");
             document
-              .querySelector("nav a[href*=" + sectionId + "]")
+              .querySelector(`nav a[href*="${sectionId}"]`)
               ?.classList.remove("text-white");
           } else {
             document
-              .querySelector("nav a[href*=" + sectionId + "]")
+              .querySelector(`nav a[href*="${sectionId}"]`)
               ?.classList.remove("text-hemera-light");
             document
-              .querySelector("nav a[href*=" + sectionId + "]")
+              .querySelector(`nav a[href*="${sectionId}"]`)
               ?.classList.add("text-white");
           }
         });

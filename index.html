@@ -1,793 +1,1653 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hêmera Gestão | Consultoria em Saúde Pública</title>
-    <link rel="icon" href="https://i.imgur.com/NJwpNts.png" type="image/png">
+    <link rel="icon" href="https://i.imgur.com/NJwpNts.png" type="image/png" />
     <link rel="canonical" href="https://hemeragestao.com.br" />
-    
+
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&family=Playfair+Display:ital,wght@0,700;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&family=Playfair+Display:ital,wght@0,700;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'deep-blue': '#00609e',
-                        'hemera-blue': '#00609e',
-                        'hemera-light': '#48a6f7',
-                        'accent-orange': '#E8703A',
-                        'dark-bg': '#050505',
-                        'card-bg': '#0a0a0a',
-                    },
-                    fontFamily: {
-                        'montserrat': ['Montserrat', 'sans-serif'],
-                        'opensans': ['Open Sans', 'sans-serif'],
-                        'display': ['Plus Jakarta Sans', 'sans-serif'],
-                        'serif': ['Playfair Display', 'serif'],
-                    }
-                }
-            }
-        }
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "deep-blue": "#00609e",
+              "hemera-blue": "#00609e",
+              "hemera-light": "#48a6f7",
+              "accent-orange": "#E8703A",
+              "dark-bg": "#050505",
+              "card-bg": "#0a0a0a",
+            },
+            fontFamily: {
+              montserrat: ["Montserrat", "sans-serif"],
+              opensans: ["Open Sans", "sans-serif"],
+              display: ["Plus Jakarta Sans", "sans-serif"],
+              serif: ["Playfair Display", "serif"],
+            },
+          },
+        },
+      };
     </script>
 
     <style>
-        @import "tailwindcss";
+      @import "tailwindcss";
 
-        body {
-            background-color: #050505;
-            color: #FFFFFF;
-            font-family: 'Open Sans', sans-serif;
-            overflow-x: hidden;
-        }
+      body {
+        background-color: #050505;
+        color: #ffffff;
+        font-family: "Open Sans", sans-serif;
+        overflow-x: hidden;
+      }
 
-        .glass {
-            background: rgba(0, 96, 158, 0.1);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
+      .glass {
+        background: rgba(0, 96, 158, 0.1);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
 
-        .text-gradient {
-            background: linear-gradient(to right, #FFFFFF, #48a6f7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
 
-        .bento-item {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+      .text-gradient {
+        background: linear-gradient(to right, #ffffff, #48a6f7);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
 
-        .bento-item:hover {
-            transform: translateY(-5px);
-            border-color: rgba(72, 166, 247, 0.4);
-            box-shadow: 0 10px 30px -10px rgba(72, 166, 247, 0.2);
-        }
+      .bento-item {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
 
-        .marquee {
-            display: flex;
-            overflow: hidden;
-            user-select: none;
-            gap: 4rem;
-        }
+      .bento-item:hover {
+        transform: translateY(-5px);
+        border-color: rgba(72, 166, 247, 0.4);
+        box-shadow: 0 10px 30px -10px rgba(72, 166, 247, 0.2);
+      }
 
-        .marquee-content {
-            flex-shrink: 0;
-            display: flex;
-            justify-content: space-around;
-            gap: 4rem;
-            min-width: 100%;
-            animation: scroll 30s linear infinite;
-        }
+      .marquee {
+        display: flex;
+        overflow: hidden;
+        user-select: none;
+        gap: 4rem;
+      }
 
-        @keyframes scroll {
-            from { transform: translateX(0); }
-            to { transform: translateX(-100%); }
-        }
+      .marquee-content {
+        flex-shrink: 0;
+        display: flex;
+        justify-content: space-around;
+        gap: 4rem;
+        min-width: 100%;
+        animation: scroll 30s linear infinite;
+      }
 
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
+      @keyframes scroll {
+        from {
+          transform: translateX(0);
         }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #050505;
+        to {
+          transform: translateX(-100%);
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #1A3A5C;
-            border-radius: 10px;
-        }
+      }
 
-        /* Hero text reveal animation classes */
-        .reveal-text {
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
-        }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #050505;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #1a3a5c;
+        border-radius: 10px;
+      }
+
+      /* Hero text reveal animation classes */
+      .reveal-text {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+      }
     </style>
-</head>
-<body class="custom-scrollbar">
-
+  </head>
+  <body class="custom-scrollbar text-white bg-dark-bg">
     <!-- HEADER -->
-    <header id="header" class="fixed top-0 left-0 w-full z-50 transition-all duration-500 py-6 px-6 md:px-12 bg-gradient-to-b from-dark-bg/80 to-transparent">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-4">
-                <div class="bg-white/15 p-2 rounded-xl backdrop-blur-md border border-white/10 shadow-lg shadow-black/10">
-                    <img src="https://i.imgur.com/NJwpNts.png" alt="Hêmera Logo" class="h-14 w-auto" referrerPolicy="no-referrer">
-                </div>
-                <span class="font-montserrat font-bold text-xl tracking-[0.15em] uppercase hidden sm:inline">Hêmera <span class="text-hemera-light">Gestão</span></span>
-            </div>
-            
-            <nav class="hidden lg:flex items-center gap-10 text-[11px] font-extrabold uppercase tracking-[0.25em] text-hemera-blue bg-white/15 px-10 py-3 rounded-2xl backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/20">
-                <a href="#home" class="hover:text-hemera-light transition-all duration-300 relative group">
-                    Início
-                    <span class="absolute -bottom-1 left-0 w-0 h-px bg-hemera-light transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                <a href="#sobre" class="hover:text-hemera-light transition-all duration-300 relative group">
-                    Sobre
-                    <span class="absolute -bottom-1 left-0 w-0 h-px bg-hemera-light transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                <a href="#solucoes" class="hover:text-hemera-light transition-all duration-300 relative group">
-                    Soluções
-                    <span class="absolute -bottom-1 left-0 w-0 h-px bg-hemera-light transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                <a href="#parceiros" class="hover:text-hemera-light transition-all duration-300 relative group">
-                    Parceiros
-                    <span class="absolute -bottom-1 left-0 w-0 h-px bg-hemera-light transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                <a href="#contato" class="hover:text-hemera-light transition-all duration-300 relative group">
-                    Contato
-                    <span class="absolute -bottom-1 left-0 w-0 h-px bg-hemera-light transition-all duration-300 group-hover:w-full"></span>
-                </a>
-            </nav>
-
-            <div class="flex items-center gap-6">
-                <a href="https://wa.me/5516997532025" target="_blank" class="hidden sm:flex items-center gap-2 bg-hemera-blue hover:bg-hemera-light text-white px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all transform hover:scale-105 shadow-lg shadow-hemera-blue/20">
-                    <i data-lucide="message-circle" class="w-4 h-4"></i>
-                    Fale Conosco
-                </a>
-                
-                <!-- Mobile Menu Button -->
-                <button id="mobile-menu-btn" class="lg:hidden text-white p-2 hover:text-hemera-light transition-colors">
-                    <i data-lucide="menu" class="w-8 h-8"></i>
-                </button>
-            </div>
+    <header
+      id="header"
+      class="fixed top-0 left-0 w-full z-50 transition-all duration-500 py-6 px-6 md:px-12 bg-gradient-to-b from-dark-bg/80 to-transparent"
+    >
+      <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="flex items-center gap-4">
+          <div
+            class="bg-white/15 p-2 rounded-xl backdrop-blur-md border border-white/10 shadow-lg shadow-black/10"
+          >
+            <img
+              src="https://i.imgur.com/NJwpNts.png"
+              alt="Hêmera Logo"
+              class="h-14 w-auto"
+              referrerpolicy="no-referrer"
+            />
+          </div>
+          <span
+            class="font-montserrat font-bold text-xl tracking-[0.15em] uppercase hidden sm:inline"
+            >Hêmera <span class="text-hemera-light">Gestão</span></span
+          >
         </div>
 
-        <!-- Mobile Menu Overlay -->
-        <div id="mobile-menu" class="fixed inset-0 bg-dark-bg/98 z-[60] flex flex-col items-center justify-center gap-10 text-xl font-montserrat font-bold uppercase tracking-[0.25em] transform translate-x-full transition-transform duration-700 lg:hidden">
-            <button id="close-menu-btn" class="absolute top-8 right-8 text-white hover:text-hemera-light transition-colors">
-                <i data-lucide="x" class="w-10 h-10"></i>
-            </button>
-            <a href="#home" class="mobile-link hover:text-hemera-light transition-all">Início</a>
-            <a href="#sobre" class="mobile-link hover:text-hemera-light transition-all">Sobre</a>
-            <a href="#solucoes" class="mobile-link hover:text-hemera-light transition-all">Soluções</a>
-            <a href="#parceiros" class="mobile-link hover:text-hemera-light transition-all">Parceiros</a>
-            <a href="#contato" class="mobile-link hover:text-hemera-light transition-all">Contato</a>
-            <a href="https://wa.me/5516997532025" target="_blank" class="bg-hemera-blue text-white px-10 py-5 rounded-full text-xs mt-6 tracking-widest shadow-xl shadow-hemera-blue/20">Fale Conosco</a>
+        <nav
+          class="hidden lg:flex items-center gap-10 text-[11px] font-extrabold uppercase tracking-[0.25em] text-white bg-white/15 px-10 py-3 rounded-2xl backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/20"
+        >
+          <a
+            href="#home"
+            class="hover:text-hemera-light transition-all duration-300 relative group"
+          >
+            Início
+            <span
+              class="absolute -bottom-1 left-0 w-0 h-px bg-hemera-light transition-all duration-300 group-hover:w-full"
+            ></span>
+          </a>
+          <a
+            href="#sobre"
+            class="hover:text-hemera-light transition-all duration-300 relative group"
+          >
+            Sobre
+            <span
+              class="absolute -bottom-1 left-0 w-0 h-px bg-hemera-light transition-all duration-300 group-hover:w-full"
+            ></span>
+          </a>
+          <a
+            href="#solucoes"
+            class="hover:text-hemera-light transition-all duration-300 relative group"
+          >
+            Soluções
+            <span
+              class="absolute -bottom-1 left-0 w-0 h-px bg-hemera-light transition-all duration-300 group-hover:w-full"
+            ></span>
+          </a>
+          <a
+            href="#parceiros"
+            class="hover:text-hemera-light transition-all duration-300 relative group"
+          >
+            Parceiros
+            <span
+              class="absolute -bottom-1 left-0 w-0 h-px bg-hemera-light transition-all duration-300 group-hover:w-full"
+            ></span>
+          </a>
+          <a
+            href="#contato"
+            class="hover:text-hemera-light transition-all duration-300 relative group"
+          >
+            Contato
+            <span
+              class="absolute -bottom-1 left-0 w-0 h-px bg-hemera-light transition-all duration-300 group-hover:w-full"
+            ></span>
+          </a>
+        </nav>
+
+        <div class="flex items-center gap-6">
+          <a
+            href="https://wa.me/5516997532025"
+            target="_blank"
+            class="hidden sm:flex items-center gap-2 bg-hemera-blue hover:bg-hemera-light text-white px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all transform hover:scale-105 shadow-lg shadow-hemera-blue/20"
+          >
+            <i data-lucide="message-circle" class="w-4 h-4"></i>
+            Fale Conosco
+          </a>
+
+          <!-- Mobile Menu Button -->
+          <button
+            id="mobile-menu-btn"
+            class="lg:hidden text-white p-2 hover:text-hemera-light transition-colors"
+          >
+            <i data-lucide="menu" class="w-8 h-8"></i>
+          </button>
         </div>
+      </div>
+
+      <!-- Mobile Menu Overlay -->
+      <div
+        id="mobile-menu"
+        class="fixed inset-0 bg-dark-bg/98 z-[60] flex flex-col items-center justify-center gap-10 text-xl font-montserrat font-bold uppercase tracking-[0.25em] text-white transform translate-x-full transition-transform duration-700 lg:hidden"
+      >
+        <button
+          id="close-menu-btn"
+          class="absolute top-8 right-8 text-white hover:text-hemera-light transition-colors"
+        >
+          <i data-lucide="x" class="w-10 h-10"></i>
+        </button>
+        <a
+          href="#home"
+          class="mobile-link hover:text-hemera-light transition-all"
+          >Início</a
+        >
+        <a
+          href="#sobre"
+          class="mobile-link hover:text-hemera-light transition-all"
+          >Sobre</a
+        >
+        <a
+          href="#solucoes"
+          class="mobile-link hover:text-hemera-light transition-all"
+          >Soluções</a
+        >
+        <a
+          href="#parceiros"
+          class="mobile-link hover:text-hemera-light transition-all"
+          >Parceiros</a
+        >
+        <a
+          href="#contato"
+          class="mobile-link hover:text-hemera-light transition-all"
+          >Contato</a
+        >
+        <a
+          href="https://wa.me/5516997532025"
+          target="_blank"
+          class="bg-hemera-blue text-white px-10 py-5 rounded-full text-xs mt-6 tracking-widest shadow-xl shadow-hemera-blue/20"
+          >Fale Conosco</a
+        >
+      </div>
     </header>
 
     <!-- HERO SECTION -->
-    <section id="home" class="relative min-h-screen flex items-center pt-32 md:pt-40 overflow-hidden">
-        <!-- Background Image with Overlay -->
-        <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=2000" alt="Hêmera Office" class="w-full h-full object-cover opacity-40" referrerPolicy="no-referrer">
-            <div class="absolute inset-0 bg-gradient-to-b from-dark-bg/80 via-dark-bg/60 to-dark-bg"></div>
-            <div class="absolute inset-0 bg-[#1A3A5C]/30"></div>
+    <section
+      id="home"
+      class="relative min-h-screen flex items-center pt-32 md:pt-40 overflow-hidden"
+    >
+      <!-- Background Image with Overlay -->
+      <div class="absolute inset-0 z-0">
+        <img
+          src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=2000"
+          alt="Hêmera Office"
+          class="w-full h-full object-cover opacity-40"
+          referrerpolicy="no-referrer"
+        />
+        <div
+          class="absolute inset-0 bg-gradient-to-b from-dark-bg/80 via-dark-bg/60 to-dark-bg"
+        ></div>
+        <div class="absolute inset-0 bg-[#1A3A5C]/30"></div>
+      </div>
+
+      <div
+        class="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full grid md:grid-cols-2 gap-12 items-center"
+      >
+        <div class="hero-content">
+          <div
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6 border border-white/10"
+          >
+            <span
+              class="w-2 h-2 bg-hemera-light rounded-full animate-pulse"
+            ></span>
+            <span
+              class="text-[10px] uppercase tracking-[0.2em] font-bold text-hemera-light"
+              >Consultoria de Gestão em Saúde</span
+            >
+          </div>
+
+          <h1
+            class="text-5xl md:text-7xl font-montserrat font-extrabold leading-[1.1] mb-6 tracking-tight reveal-text"
+          >
+            Gestão que Transforma
+            <span class="text-gradient">Saúde Pública</span> em Resultados Reais
+          </h1>
+
+          <p
+            class="text-lg md:text-xl text-white/70 font-opensans leading-relaxed mb-8 max-w-xl reveal-text"
+          >
+            Consultoria especializada para ONG/OSC, OS, OSCIP e Prefeituras —
+            governança sólida, indicadores estratégicos e segurança jurídica
+            TCE/MP.
+          </p>
+
+          <div class="flex flex-col sm:flex-row gap-4 reveal-text">
+            <a
+              href="#contato"
+              class="group relative bg-hemera-blue text-white px-8 py-5 rounded-xl font-bold text-sm uppercase tracking-widest overflow-hidden transition-all"
+            >
+              <span class="relative z-10">Iniciar Diagnóstico Gratuito</span>
+              <div
+                class="absolute inset-0 bg-white/10 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"
+              ></div>
+            </a>
+            <div
+              class="flex items-center gap-4 px-6 py-4 rounded-xl glass border border-white/5"
+            >
+              <div class="flex -space-x-3">
+                <img
+                  src="https://i.pravatar.cc/100?u=1"
+                  class="w-8 h-8 rounded-full border-2 border-dark-bg"
+                  alt="User"
+                />
+                <img
+                  src="https://i.pravatar.cc/100?u=2"
+                  class="w-8 h-8 rounded-full border-2 border-dark-bg"
+                  alt="User"
+                />
+                <img
+                  src="https://i.pravatar.cc/100?u=3"
+                  class="w-8 h-8 rounded-full border-2 border-dark-bg"
+                  alt="User"
+                />
+              </div>
+              <div
+                class="text-[10px] uppercase tracking-wider font-bold text-white/50"
+              >
+                +30 Serviços Geridos
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full grid md:grid-cols-2 gap-12 items-center">
-            <div class="hero-content">
-                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6 border border-white/10">
-                    <span class="w-2 h-2 bg-hemera-light rounded-full animate-pulse"></span>
-                    <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-hemera-light">Consultoria de Gestão em Saúde</span>
-                </div>
-                
-                <h1 class="text-5xl md:text-7xl font-montserrat font-extrabold leading-[1.1] mb-6 tracking-tight reveal-text">
-                    Gestão que Transforma <span class="text-gradient">Saúde Pública</span> em Resultados Reais
-                </h1>
-                
-                <p class="text-lg md:text-xl text-white/70 font-opensans leading-relaxed mb-8 max-w-xl reveal-text">
-                    Consultoria especializada para ONG/OSC, OS, OSCIP e Prefeituras — governança sólida, indicadores estratégicos e segurança jurídica TCE/MP.
-                </p>
-
-                <div class="flex flex-col sm:flex-row gap-4 reveal-text">
-                    <a href="#contato" class="group relative bg-hemera-blue text-white px-8 py-5 rounded-xl font-bold text-sm uppercase tracking-widest overflow-hidden transition-all">
-                        <span class="relative z-10">Iniciar Diagnóstico Gratuito</span>
-                        <div class="absolute inset-0 bg-white/10 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                    </a>
-                    <div class="flex items-center gap-4 px-6 py-4 rounded-xl glass border border-white/5">
-                        <div class="flex -space-x-3">
-                            <img src="https://i.pravatar.cc/100?u=1" class="w-8 h-8 rounded-full border-2 border-dark-bg" alt="User">
-                            <img src="https://i.pravatar.cc/100?u=2" class="w-8 h-8 rounded-full border-2 border-dark-bg" alt="User">
-                            <img src="https://i.pravatar.cc/100?u=3" class="w-8 h-8 rounded-full border-2 border-dark-bg" alt="User">
-                        </div>
-                        <div class="text-[10px] uppercase tracking-wider font-bold text-white/50">
-                            +30 Serviços Geridos
-                        </div>
-                    </div>
-                </div>
+        <div class="hidden md:block relative">
+          <div
+            class="relative z-10 rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-hemera-blue/10 transform rotate-3 hover:rotate-0 transition-transform duration-700"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=1000"
+              alt="Saúde Pública"
+              class="w-full h-full object-cover"
+              referrerpolicy="no-referrer"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-dark-bg via-transparent to-transparent"
+            ></div>
+            <div
+              class="absolute bottom-8 left-8 right-8 p-6 glass rounded-2xl border border-white/10"
+            >
+              <p
+                class="text-xs font-bold uppercase tracking-widest text-hemera-light mb-2"
+              >
+                Impacto Real
+              </p>
+              <p class="text-sm text-white/80">
+                "Há mais de 9 anos, a Hêmera atua na gestão de serviços públicos
+                de saúde em 8 estados brasileiros."
+              </p>
             </div>
-
-            <div class="hidden md:block relative">
-                <div class="relative z-10 rounded-3xl overflow-hidden border border-white/10 shadow-2xl shadow-hemera-blue/10 transform rotate-3 hover:rotate-0 transition-transform duration-700">
-                    <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=1000" alt="Saúde Pública" class="w-full h-full object-cover" referrerPolicy="no-referrer">
-                    <div class="absolute inset-0 bg-gradient-to-t from-dark-bg via-transparent to-transparent"></div>
-                    <div class="absolute bottom-8 left-8 right-8 p-6 glass rounded-2xl border border-white/10">
-                        <p class="text-xs font-bold uppercase tracking-widest text-hemera-light mb-2">Impacto Real</p>
-                        <p class="text-sm text-white/80">"Há mais de 9 anos, a Hêmera atua na gestão de serviços públicos de saúde em 8 estados brasileiros."</p>
-                    </div>
-                </div>
-                <!-- Decorative elements -->
-                <div class="absolute -top-10 -right-10 w-40 h-40 bg-hemera-blue/20 blur-[80px] rounded-full"></div>
-                <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-deep-blue/40 blur-[80px] rounded-full"></div>
-            </div>
+          </div>
+          <!-- Decorative elements -->
+          <div
+            class="absolute -top-10 -right-10 w-40 h-40 bg-hemera-blue/20 blur-[80px] rounded-full"
+          ></div>
+          <div
+            class="absolute -bottom-10 -left-10 w-40 h-40 bg-deep-blue/40 blur-[80px] rounded-full"
+          ></div>
         </div>
+      </div>
     </section>
 
     <!-- AUTHORITY MARQUEE -->
     <div class="py-12 bg-card-bg border-y border-white/5 overflow-hidden">
-        <div class="marquee">
-            <div class="marquee-content">
-                <span class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter">9+ Anos de Experiência</span>
-                <span class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter">8 Estados Brasileiros</span>
-                <span class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter">Dezenas de Serviços Geridos</span>
-                <span class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter">Segurança Jurídica TCE/MP</span>
-                <span class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter">Governança Sólida</span>
-                <span class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter">Indicadores Estratégicos</span>
-            </div>
-            <div class="marquee-content" aria-hidden="true">
-                <span class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter">9+ Anos de Experiência</span>
-                <span class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter">8 Estados Brasileiros</span>
-                <span class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter">Dezenas de Serviços Geridos</span>
-                <span class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter">Segurança Jurídica TCE/MP</span>
-                <span class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter">Governança Sólida</span>
-                <span class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter">Indicadores Estratégicos</span>
-            </div>
+      <div class="marquee">
+        <div class="marquee-content">
+          <span
+            class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter"
+            >9+ Anos de Experiência</span
+          >
+          <span
+            class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter"
+            >8 Estados Brasileiros</span
+          >
+          <span
+            class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter"
+            >Dezenas de Serviços Geridos</span
+          >
+          <span
+            class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter"
+            >Segurança Jurídica TCE/MP</span
+          >
+          <span
+            class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter"
+            >Governança Sólida</span
+          >
+          <span
+            class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter"
+            >Indicadores Estratégicos</span
+          >
         </div>
+        <div class="marquee-content" aria-hidden="true">
+          <span
+            class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter"
+            >9+ Anos de Experiência</span
+          >
+          <span
+            class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter"
+            >8 Estados Brasileiros</span
+          >
+          <span
+            class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter"
+            >Dezenas de Serviços Geridos</span
+          >
+          <span
+            class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter"
+            >Segurança Jurídica TCE/MP</span
+          >
+          <span
+            class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter"
+            >Governança Sólida</span
+          >
+          <span
+            class="text-2xl md:text-3xl font-montserrat font-bold text-white/20 uppercase tracking-tighter"
+            >Indicadores Estratégicos</span
+          >
+        </div>
+      </div>
     </div>
 
     <!-- CHALLENGES SECTION -->
     <section class="py-24 px-6 md:px-12">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-16 scroll-reveal">
-                <h2 class="text-3xl md:text-5xl font-montserrat font-bold mb-6">Sua Organização Enfrenta <br><span class="text-hemera-light">Algum Desses Desafios?</span></h2>
-                <p class="text-white/60 max-w-2xl mx-auto">Se você se identificou com algum desses cenários, a Hêmera tem a solução. Transformamos desafios em processos estruturados.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Challenge Card 1 -->
-                <div class="p-8 rounded-3xl glass border-l-4 border-l-hemera-blue bento-item scroll-reveal">
-                    <div class="w-12 h-12 bg-hemera-blue/10 rounded-xl flex items-center justify-center mb-6">
-                        <i data-lucide="trending-down" class="text-hemera-light"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4 font-montserrat">Indicadores abaixo da meta</h3>
-                    <p class="text-sm text-white/50 leading-relaxed">Dificuldade em atingir as metas contratuais e indicadores de saúde essenciais.</p>
-                </div>
-                <!-- Challenge Card 2 -->
-                <div class="p-8 rounded-3xl glass border-l-4 border-l-hemera-blue bento-item scroll-reveal">
-                    <div class="w-12 h-12 bg-hemera-blue/10 rounded-xl flex items-center justify-center mb-6">
-                        <i data-lucide="gavel" class="text-hemera-light"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4 font-montserrat">Risco de autuação TCE/MP</h3>
-                    <p class="text-sm text-white/50 leading-relaxed">Insegurança jurídica e exposição a fiscalizações rigorosas dos órgãos de controle.</p>
-                </div>
-                <!-- Challenge Card 3 -->
-                <div class="p-8 rounded-3xl glass border-l-4 border-l-hemera-blue bento-item scroll-reveal">
-                    <div class="w-12 h-12 bg-hemera-blue/10 rounded-xl flex items-center justify-center mb-6">
-                        <i data-lucide="file-signature" class="text-hemera-light"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4 font-montserrat">Gestão de Contratos</h3>
-                    <p class="text-sm text-white/50 leading-relaxed">Dificuldades na operacionalização e manutenção de contratos com entes públicos.</p>
-                </div>
-                <!-- Challenge Card 4 -->
-                <div class="p-8 rounded-3xl glass border-l-4 border-l-hemera-blue bento-item scroll-reveal">
-                    <div class="w-12 h-12 bg-hemera-blue/10 rounded-xl flex items-center justify-center mb-6">
-                        <i data-lucide="workflow" class="text-hemera-light"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4 font-montserrat">Processos Desorganizados</h3>
-                    <p class="text-sm text-white/50 leading-relaxed">Falta de padronização e fluxos ineficientes que comprometem a assistência.</p>
-                </div>
-                <!-- Challenge Card 5 -->
-                <div class="p-8 rounded-3xl glass border-l-4 border-l-hemera-blue bento-item scroll-reveal">
-                    <div class="w-12 h-12 bg-hemera-blue/10 rounded-xl flex items-center justify-center mb-6">
-                        <i data-lucide="hourglass" class="text-hemera-light"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4 font-montserrat">Filas Crescentes</h3>
-                    <p class="text-sm text-white/50 leading-relaxed">Falta de controle na Atenção Primária à Saúde (APS) e gargalos assistenciais.</p>
-                </div>
-                <!-- Challenge Card 6 -->
-                <div class="p-8 rounded-3xl glass border-l-4 border-l-hemera-blue bento-item scroll-reveal">
-                    <div class="w-12 h-12 bg-hemera-blue/10 rounded-xl flex items-center justify-center mb-6">
-                        <i data-lucide="calculator" class="text-hemera-light"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4 font-montserrat">Prestações de Contas</h3>
-                    <p class="text-sm text-white/50 leading-relaxed">Inconsistências ou atrasos que geram multas e sanções administrativas.</p>
-                </div>
-            </div>
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16 scroll-reveal">
+          <h2 class="text-3xl md:text-5xl font-montserrat font-bold mb-6">
+            Sua Organização Enfrenta <br /><span class="text-hemera-light"
+              >Algum Desses Desafios?</span
+            >
+          </h2>
+          <p class="text-white/60 max-w-2xl mx-auto">
+            Se você se identificou com algum desses cenários, a Hêmera tem a
+            solução. Transformamos desafios em processos estruturados.
+          </p>
         </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Challenge Card 1 -->
+          <div
+            class="p-8 rounded-3xl glass border-l-4 border-l-hemera-blue bento-item scroll-reveal"
+          >
+            <div
+              class="w-12 h-12 bg-hemera-blue/10 rounded-xl flex items-center justify-center mb-6"
+            >
+              <i data-lucide="trending-down" class="text-hemera-light"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-4 font-montserrat">
+              Indicadores abaixo da meta
+            </h3>
+            <p class="text-sm text-white/50 leading-relaxed">
+              Dificuldade em atingir as metas contratuais e indicadores de saúde
+              essenciais.
+            </p>
+          </div>
+          <!-- Challenge Card 2 -->
+          <div
+            class="p-8 rounded-3xl glass border-l-4 border-l-hemera-blue bento-item scroll-reveal"
+          >
+            <div
+              class="w-12 h-12 bg-hemera-blue/10 rounded-xl flex items-center justify-center mb-6"
+            >
+              <i data-lucide="gavel" class="text-hemera-light"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-4 font-montserrat">
+              Risco de autuação TCE/MP
+            </h3>
+            <p class="text-sm text-white/50 leading-relaxed">
+              Insegurança jurídica e exposição a fiscalizações rigorosas dos
+              órgãos de controle.
+            </p>
+          </div>
+          <!-- Challenge Card 3 -->
+          <div
+            class="p-8 rounded-3xl glass border-l-4 border-l-hemera-blue bento-item scroll-reveal"
+          >
+            <div
+              class="w-12 h-12 bg-hemera-blue/10 rounded-xl flex items-center justify-center mb-6"
+            >
+              <i data-lucide="file-signature" class="text-hemera-light"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-4 font-montserrat">
+              Gestão de Contratos
+            </h3>
+            <p class="text-sm text-white/50 leading-relaxed">
+              Dificuldades na operacionalização e manutenção de contratos com
+              entes públicos.
+            </p>
+          </div>
+          <!-- Challenge Card 4 -->
+          <div
+            class="p-8 rounded-3xl glass border-l-4 border-l-hemera-blue bento-item scroll-reveal"
+          >
+            <div
+              class="w-12 h-12 bg-hemera-blue/10 rounded-xl flex items-center justify-center mb-6"
+            >
+              <i data-lucide="workflow" class="text-hemera-light"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-4 font-montserrat">
+              Processos Desorganizados
+            </h3>
+            <p class="text-sm text-white/50 leading-relaxed">
+              Falta de padronização e fluxos ineficientes que comprometem a
+              assistência.
+            </p>
+          </div>
+          <!-- Challenge Card 5 -->
+          <div
+            class="p-8 rounded-3xl glass border-l-4 border-l-hemera-blue bento-item scroll-reveal"
+          >
+            <div
+              class="w-12 h-12 bg-hemera-blue/10 rounded-xl flex items-center justify-center mb-6"
+            >
+              <i data-lucide="hourglass" class="text-hemera-light"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-4 font-montserrat">
+              Filas Crescentes
+            </h3>
+            <p class="text-sm text-white/50 leading-relaxed">
+              Falta de controle na Atenção Primária à Saúde (APS) e gargalos
+              assistenciais.
+            </p>
+          </div>
+          <!-- Challenge Card 6 -->
+          <div
+            class="p-8 rounded-3xl glass border-l-4 border-l-hemera-blue bento-item scroll-reveal"
+          >
+            <div
+              class="w-12 h-12 bg-hemera-blue/10 rounded-xl flex items-center justify-center mb-6"
+            >
+              <i data-lucide="calculator" class="text-hemera-light"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-4 font-montserrat">
+              Prestações de Contas
+            </h3>
+            <p class="text-sm text-white/50 leading-relaxed">
+              Inconsistências ou atrasos que geram multas e sanções
+              administrativas.
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- SOLUTIONS BENTO GRID -->
     <section id="solucoes" class="py-24 px-6 md:px-12 bg-card-bg">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 scroll-reveal">
-                <div class="max-w-2xl">
-                    <h2 class="text-3xl md:text-5xl font-montserrat font-bold mb-6">Como a Hêmera <br><span class="text-hemera-light">Transforma Sua Gestão</span></h2>
-                    <p class="text-white/60">Soluções estratégicas validadas em dezenas de serviços de saúde em 8 estados brasileiros.</p>
-                </div>
-                <a href="#contato" class="text-hemera-light font-bold uppercase tracking-widest text-xs flex items-center gap-2 group">
-                    Ver todas as soluções <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-2 transition-transform"></i>
-                </a>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[240px]">
-                <!-- Bento 1: Governança -->
-                <div class="md:col-span-8 md:row-span-2 p-10 rounded-3xl glass border border-white/5 flex flex-col justify-center relative overflow-hidden bento-item scroll-reveal">
-                    <div class="absolute top-10 right-10 w-48 h-48 bg-hemera-blue/30 blur-3xl rounded-full"></div>
-                    <div class="relative z-10">
-                        <div class="w-16 h-16 bg-hemera-blue/20 rounded-2xl flex items-center justify-center mb-8">
-                            <i data-lucide="landmark" class="text-hemera-light w-8 h-8"></i>
-                        </div>
-                        <h3 class="text-4xl font-bold mb-6 font-montserrat">Governança Estruturada</h3>
-                        <p class="text-white/80 text-lg max-w-xl mb-8 leading-relaxed">Implantamos modelos de governança robustos alinhados à Lei 13.019 e às exigências dos órgãos de controle, garantindo blindagem institucional e segurança jurídica plena para sua organização.</p>
-                        <ul class="grid grid-cols-2 gap-y-4 gap-x-8 text-sm font-bold uppercase tracking-widest text-white/50">
-                            <li class="flex items-center gap-3"><span class="w-2 h-2 bg-hemera-light rounded-full"></span> Lei 13.019/2014</li>
-                            <li class="flex items-center gap-3"><span class="w-2 h-2 bg-hemera-light rounded-full"></span> Políticas Internas</li>
-                            <li class="flex items-center gap-3"><span class="w-2 h-2 bg-hemera-light rounded-full"></span> Auditoria TCE/MP</li>
-                            <li class="flex items-center gap-3"><span class="w-2 h-2 bg-hemera-light rounded-full"></span> Compliance Pleno</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Bento 2: Indicadores -->
-                <div class="md:col-span-4 md:row-span-1 p-8 rounded-3xl glass border border-white/5 flex flex-col justify-between bento-item scroll-reveal">
-                    <div class="w-12 h-12 bg-hemera-light/20 rounded-xl flex items-center justify-center">
-                        <i data-lucide="layout-dashboard" class="text-hemera-light"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-bold mb-2 font-montserrat">Painéis Estratégicos</h3>
-                        <p class="text-xs text-white/50">Monitoramento em tempo real de indicadores APS e hospitalares.</p>
-                    </div>
-                </div>
-
-                <!-- Bento 3: Contratos -->
-                <div class="md:col-span-4 md:row-span-1 p-8 rounded-3xl glass border border-white/5 flex flex-col justify-between bento-item scroll-reveal">
-                    <div class="w-12 h-12 bg-hemera-light/20 rounded-xl flex items-center justify-center">
-                        <i data-lucide="file-check" class="text-hemera-light"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-bold mb-2 font-montserrat">Gestão de Contratos</h3>
-                        <p class="text-xs text-white/50">Suporte completo na prestação de contas e conformidade legal.</p>
-                    </div>
-                </div>
-
-                <!-- Bento 4: Blindagem -->
-                <div class="md:col-span-6 md:row-span-1 p-8 rounded-3xl glass border border-white/5 flex flex-col justify-between bento-item scroll-reveal">
-                    <div class="w-12 h-12 bg-hemera-light/20 rounded-xl flex items-center justify-center">
-                        <i data-lucide="shield-check" class="text-hemera-light"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-bold mb-2 font-montserrat">Blindagem Jurídica</h3>
-                        <p class="text-xs text-white/50">Diagnóstico de riscos e controles internos para segurança institucional.</p>
-                    </div>
-                </div>
-
-                <!-- Bento 5: Resultados -->
-                <div class="md:col-span-6 md:row-span-1 p-8 bg-hemera-blue rounded-3xl flex flex-col justify-between bento-item scroll-reveal">
-                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                        <i data-lucide="award" class="text-white"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-bold mb-2 font-montserrat text-white">Resultados Mensuráveis</h3>
-                        <p class="text-xs text-white/80">Foco em indicadores no azul, menos filas e processos padronizados.</p>
-                    </div>
-                </div>
-            </div>
+      <div class="max-w-7xl mx-auto">
+        <div
+          class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 scroll-reveal"
+        >
+          <div class="max-w-2xl">
+            <h2 class="text-3xl md:text-5xl font-montserrat font-bold mb-6">
+              Como a Hêmera <br /><span class="text-hemera-light"
+                >Transforma Sua Gestão</span
+              >
+            </h2>
+            <p class="text-white/60">
+              Soluções estratégicas validadas em dezenas de serviços de saúde em
+              8 estados brasileiros.
+            </p>
+          </div>
+          <a
+            href="#contato"
+            class="text-hemera-light font-bold uppercase tracking-widest text-xs flex items-center gap-2 group"
+          >
+            Ver todas as soluções
+            <i
+              data-lucide="arrow-right"
+              class="w-4 h-4 group-hover:translate-x-2 transition-transform"
+            ></i>
+          </a>
         </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[240px]">
+          <!-- Bento 1: Governança -->
+          <div
+            class="md:col-span-8 md:row-span-2 p-10 rounded-3xl glass border border-white/5 flex flex-col justify-center relative overflow-hidden bento-item scroll-reveal"
+          >
+            <div
+              class="absolute top-10 right-10 w-48 h-48 bg-hemera-blue/30 blur-3xl rounded-full"
+            ></div>
+            <div class="relative z-10">
+              <div
+                class="w-16 h-16 bg-hemera-blue/20 rounded-2xl flex items-center justify-center mb-8"
+              >
+                <i data-lucide="landmark" class="text-hemera-light w-8 h-8"></i>
+              </div>
+              <h3 class="text-4xl font-bold mb-6 font-montserrat">
+                Governança Estruturada
+              </h3>
+              <p class="text-white/80 text-lg max-w-xl mb-8 leading-relaxed">
+                Implantamos modelos de governança robustos alinhados à Lei
+                13.019 e às exigências dos órgãos de controle, garantindo
+                blindagem institucional e segurança jurídica plena para sua
+                organização.
+              </p>
+              <ul
+                class="grid grid-cols-2 gap-y-4 gap-x-8 text-sm font-bold uppercase tracking-widest text-white/50"
+              >
+                <li class="flex items-center gap-3">
+                  <span class="w-2 h-2 bg-hemera-light rounded-full"></span> Lei
+                  13.019/2014
+                </li>
+                <li class="flex items-center gap-3">
+                  <span class="w-2 h-2 bg-hemera-light rounded-full"></span>
+                  Políticas Internas
+                </li>
+                <li class="flex items-center gap-3">
+                  <span class="w-2 h-2 bg-hemera-light rounded-full"></span>
+                  Auditoria TCE/MP
+                </li>
+                <li class="flex items-center gap-3">
+                  <span class="w-2 h-2 bg-hemera-light rounded-full"></span>
+                  Compliance Pleno
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Bento 2: Indicadores -->
+          <div
+            class="md:col-span-4 md:row-span-1 p-8 rounded-3xl glass border border-white/5 flex flex-col justify-between bento-item scroll-reveal"
+          >
+            <div
+              class="w-12 h-12 bg-hemera-light/20 rounded-xl flex items-center justify-center"
+            >
+              <i data-lucide="layout-dashboard" class="text-hemera-light"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold mb-2 font-montserrat">
+                Painéis Estratégicos
+              </h3>
+              <p class="text-xs text-white/50">
+                Monitoramento em tempo real de indicadores APS e hospitalares.
+              </p>
+            </div>
+          </div>
+
+          <!-- Bento 3: Contratos -->
+          <div
+            class="md:col-span-4 md:row-span-1 p-8 rounded-3xl glass border border-white/5 flex flex-col justify-between bento-item scroll-reveal"
+          >
+            <div
+              class="w-12 h-12 bg-hemera-light/20 rounded-xl flex items-center justify-center"
+            >
+              <i data-lucide="file-check" class="text-hemera-light"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold mb-2 font-montserrat">
+                Gestão de Contratos
+              </h3>
+              <p class="text-xs text-white/50">
+                Suporte completo na prestação de contas e conformidade legal.
+              </p>
+            </div>
+          </div>
+
+          <!-- Bento 4: Blindagem -->
+          <div
+            class="md:col-span-6 md:row-span-1 p-8 rounded-3xl glass border border-white/5 flex flex-col justify-between bento-item scroll-reveal"
+          >
+            <div
+              class="w-12 h-12 bg-hemera-light/20 rounded-xl flex items-center justify-center"
+            >
+              <i data-lucide="shield-check" class="text-hemera-light"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold mb-2 font-montserrat">
+                Blindagem Jurídica
+              </h3>
+              <p class="text-xs text-white/50">
+                Diagnóstico de riscos e controles internos para segurança
+                institucional.
+              </p>
+            </div>
+          </div>
+
+          <!-- Bento 5: Resultados -->
+          <div
+            class="md:col-span-6 md:row-span-1 p-8 bg-hemera-blue rounded-3xl flex flex-col justify-between bento-item scroll-reveal"
+          >
+            <div
+              class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center"
+            >
+              <i data-lucide="award" class="text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold mb-2 font-montserrat text-white">
+                Resultados Mensuráveis
+              </h3>
+              <p class="text-xs text-white/80">
+                Foco em indicadores no azul, menos filas e processos
+                padronizados.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- SERVICES GRID -->
     <section class="py-24 px-6 md:px-12 bg-dark-bg relative overflow-hidden">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-        
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-16 scroll-reveal">
-                <h2 class="text-3xl md:text-5xl font-montserrat font-bold mb-6">Experiência em Toda a <br><span class="text-hemera-light">Rede de Serviços Públicos</span></h2>
-                <p class="text-white/60 max-w-3xl mx-auto">Nossa expertise abrange todas as tipologias do SUS — gerindo recursos e pessoas em serviços que vão da atenção primária ao cuidado especializado.</p>
-            </div>
+      <div
+        class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
+      ></div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <!-- Service Card -->
-                <div class="p-6 rounded-2xl glass border border-white/5 text-center bento-item scroll-reveal">
-                    <i data-lucide="ambulance" class="w-8 h-8 text-hemera-light mx-auto mb-4"></i>
-                    <h4 class="text-sm font-bold font-montserrat uppercase tracking-wider">Urgência e Emergência</h4>
-                    <p class="text-[10px] text-white/40 mt-2">UPAs, PAs e SAMU</p>
-                </div>
-                <div class="p-6 rounded-2xl glass border border-white/5 text-center bento-item scroll-reveal">
-                    <i data-lucide="hospital" class="w-8 h-8 text-hemera-light mx-auto mb-4"></i>
-                    <h4 class="text-sm font-bold font-montserrat uppercase tracking-wider">Atenção Hospitalar</h4>
-                    <p class="text-[10px] text-white/40 mt-2">Hospitais e Maternidades</p>
-                </div>
-                <div class="p-6 rounded-2xl glass border border-white/5 text-center bento-item scroll-reveal">
-                    <i data-lucide="brain" class="w-8 h-8 text-hemera-light mx-auto mb-4"></i>
-                    <h4 class="text-sm font-bold font-montserrat uppercase tracking-wider">Saúde Mental</h4>
-                    <p class="text-[10px] text-white/40 mt-2">CAPS e Residências</p>
-                </div>
-                <div class="p-6 rounded-2xl glass border border-white/5 text-center bento-item scroll-reveal">
-                    <i data-lucide="home" class="w-8 h-8 text-hemera-light mx-auto mb-4"></i>
-                    <h4 class="text-sm font-bold font-montserrat uppercase tracking-wider">Atenção Domiciliar</h4>
-                    <p class="text-[10px] text-white/40 mt-2">Melhor em Casa</p>
-                </div>
-                <div class="p-6 rounded-2xl glass border border-white/5 text-center bento-item scroll-reveal">
-                    <i data-lucide="stethoscope" class="w-8 h-8 text-hemera-light mx-auto mb-4"></i>
-                    <h4 class="text-sm font-bold font-montserrat uppercase tracking-wider">Atenção Básica</h4>
-                    <p class="text-[10px] text-white/40 mt-2">ESF e NASF</p>
-                </div>
-                <div class="p-6 rounded-2xl glass border border-white/5 text-center bento-item scroll-reveal">
-                    <i data-lucide="hand-heart" class="w-8 h-8 text-hemera-light mx-auto mb-4"></i>
-                    <h4 class="text-sm font-bold font-montserrat uppercase tracking-wider">Assistência Social</h4>
-                    <p class="text-[10px] text-white/40 mt-2">CRAS e Convivência</p>
-                </div>
-                <div class="p-6 rounded-2xl glass border border-white/5 text-center bento-item scroll-reveal">
-                    <i data-lucide="microscope" class="w-8 h-8 text-hemera-light mx-auto mb-4"></i>
-                    <h4 class="text-sm font-bold font-montserrat uppercase tracking-wider">Apoio Diagnóstico</h4>
-                    <p class="text-[10px] text-white/40 mt-2">Laboratórios Clínicos</p>
-                </div>
-                <div class="p-6 rounded-2xl glass border border-white/5 text-center bento-item scroll-reveal">
-                    <i data-lucide="briefcase" class="w-8 h-8 text-hemera-light mx-auto mb-4"></i>
-                    <h4 class="text-sm font-bold font-montserrat uppercase tracking-wider">Gestão Institucional</h4>
-                    <p class="text-[10px] text-white/40 mt-2">Consórcios e Associações</p>
-                </div>
-            </div>
-            
-            <div class="mt-12 p-6 rounded-2xl bg-hemera-blue/10 border border-hemera-blue/20 text-center scroll-reveal">
-                <p class="text-sm font-bold uppercase tracking-[0.3em] text-hemera-light">
-                    SP · MG · PR · SC · RJ · AC · AL · RN
-                </p>
-            </div>
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16 scroll-reveal">
+          <h2 class="text-3xl md:text-5xl font-montserrat font-bold mb-6">
+            Experiência em Toda a <br /><span class="text-hemera-light"
+              >Rede de Serviços Públicos</span
+            >
+          </h2>
+          <p class="text-white/60 max-w-3xl mx-auto">
+            Nossa expertise abrange todas as tipologias do SUS — gerindo
+            recursos e pessoas em serviços que vão da atenção primária ao
+            cuidado especializado.
+          </p>
         </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <!-- Service Card -->
+          <div
+            class="p-6 rounded-2xl glass border border-white/5 text-center bento-item scroll-reveal"
+          >
+            <i
+              data-lucide="ambulance"
+              class="w-8 h-8 text-hemera-light mx-auto mb-4"
+            ></i>
+            <h4
+              class="text-sm font-bold font-montserrat uppercase tracking-wider"
+            >
+              Urgência e Emergência
+            </h4>
+            <p class="text-[10px] text-white/40 mt-2">UPAs, PAs e SAMU</p>
+          </div>
+          <div
+            class="p-6 rounded-2xl glass border border-white/5 text-center bento-item scroll-reveal"
+          >
+            <i
+              data-lucide="hospital"
+              class="w-8 h-8 text-hemera-light mx-auto mb-4"
+            ></i>
+            <h4
+              class="text-sm font-bold font-montserrat uppercase tracking-wider"
+            >
+              Atenção Hospitalar
+            </h4>
+            <p class="text-[10px] text-white/40 mt-2">
+              Hospitais e Maternidades
+            </p>
+          </div>
+          <div
+            class="p-6 rounded-2xl glass border border-white/5 text-center bento-item scroll-reveal"
+          >
+            <i
+              data-lucide="brain"
+              class="w-8 h-8 text-hemera-light mx-auto mb-4"
+            ></i>
+            <h4
+              class="text-sm font-bold font-montserrat uppercase tracking-wider"
+            >
+              Saúde Mental
+            </h4>
+            <p class="text-[10px] text-white/40 mt-2">CAPS e Residências</p>
+          </div>
+          <div
+            class="p-6 rounded-2xl glass border border-white/5 text-center bento-item scroll-reveal"
+          >
+            <i
+              data-lucide="home"
+              class="w-8 h-8 text-hemera-light mx-auto mb-4"
+            ></i>
+            <h4
+              class="text-sm font-bold font-montserrat uppercase tracking-wider"
+            >
+              Atenção Domiciliar
+            </h4>
+            <p class="text-[10px] text-white/40 mt-2">Melhor em Casa</p>
+          </div>
+          <div
+            class="p-6 rounded-2xl glass border border-white/5 text-center bento-item scroll-reveal"
+          >
+            <i
+              data-lucide="stethoscope"
+              class="w-8 h-8 text-hemera-light mx-auto mb-4"
+            ></i>
+            <h4
+              class="text-sm font-bold font-montserrat uppercase tracking-wider"
+            >
+              Atenção Básica
+            </h4>
+            <p class="text-[10px] text-white/40 mt-2">ESF e NASF</p>
+          </div>
+          <div
+            class="p-6 rounded-2xl glass border border-white/5 text-center bento-item scroll-reveal"
+          >
+            <i
+              data-lucide="hand-heart"
+              class="w-8 h-8 text-hemera-light mx-auto mb-4"
+            ></i>
+            <h4
+              class="text-sm font-bold font-montserrat uppercase tracking-wider"
+            >
+              Assistência Social
+            </h4>
+            <p class="text-[10px] text-white/40 mt-2">CRAS e Convivência</p>
+          </div>
+          <div
+            class="p-6 rounded-2xl glass border border-white/5 text-center bento-item scroll-reveal"
+          >
+            <i
+              data-lucide="microscope"
+              class="w-8 h-8 text-hemera-light mx-auto mb-4"
+            ></i>
+            <h4
+              class="text-sm font-bold font-montserrat uppercase tracking-wider"
+            >
+              Apoio Diagnóstico
+            </h4>
+            <p class="text-[10px] text-white/40 mt-2">Laboratórios Clínicos</p>
+          </div>
+          <div
+            class="p-6 rounded-2xl glass border border-white/5 text-center bento-item scroll-reveal"
+          >
+            <i
+              data-lucide="briefcase"
+              class="w-8 h-8 text-hemera-light mx-auto mb-4"
+            ></i>
+            <h4
+              class="text-sm font-bold font-montserrat uppercase tracking-wider"
+            >
+              Gestão Institucional
+            </h4>
+            <p class="text-[10px] text-white/40 mt-2">
+              Consórcios e Associações
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="mt-12 p-6 rounded-2xl bg-hemera-blue/10 border border-hemera-blue/20 text-center scroll-reveal"
+        >
+          <p
+            class="text-sm font-bold uppercase tracking-[0.3em] text-hemera-light"
+          >
+            SP · MG · PR · SC · RJ · AC · AL · RN
+          </p>
+        </div>
+      </div>
     </section>
 
     <!-- NUMBERS OF IMPACT -->
     <section class="py-24 px-6 md:px-12 bg-[#0a0a0a]">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-            <div class="scroll-reveal">
-                <div class="text-6xl md:text-8xl font-montserrat font-extrabold text-hemera-light mb-4">9+</div>
-                <p class="text-sm font-bold uppercase tracking-widest text-white/40">Anos de experiência em saúde pública</p>
-            </div>
-            <div class="scroll-reveal">
-                <div class="text-6xl md:text-8xl font-montserrat font-extrabold text-hemera-light mb-4">+30</div>
-                <p class="text-sm font-bold uppercase tracking-widest text-white/40">Serviços de saúde geridos</p>
-            </div>
-            <div class="scroll-reveal">
-                <div class="text-6xl md:text-8xl font-montserrat font-extrabold text-hemera-light mb-4">8</div>
-                <p class="text-sm font-bold uppercase tracking-widest text-white/40">Estados brasileiros de atuação</p>
-            </div>
+      <div
+        class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-center"
+      >
+        <div class="scroll-reveal">
+          <div
+            class="text-6xl md:text-8xl font-montserrat font-extrabold text-hemera-light mb-4"
+          >
+            9+
+          </div>
+          <p class="text-sm font-bold uppercase tracking-widest text-white/40">
+            Anos de experiência em saúde pública
+          </p>
         </div>
+        <div class="scroll-reveal">
+          <div
+            class="text-6xl md:text-8xl font-montserrat font-extrabold text-hemera-light mb-4"
+          >
+            +30
+          </div>
+          <p class="text-sm font-bold uppercase tracking-widest text-white/40">
+            Serviços de saúde geridos
+          </p>
+        </div>
+        <div class="scroll-reveal">
+          <div
+            class="text-6xl md:text-8xl font-montserrat font-extrabold text-hemera-light mb-4"
+          >
+            8
+          </div>
+          <p class="text-sm font-bold uppercase tracking-widest text-white/40">
+            Estados brasileiros de atuação
+          </p>
+        </div>
+      </div>
     </section>
 
     <!-- ABOUT SECTION -->
     <section id="sobre" class="py-24 px-6 md:px-12">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-            <div class="relative scroll-reveal">
-                <div class="rounded-3xl overflow-hidden border border-white/10 aspect-[4/5] relative z-10">
-                    <img src="https://i.imgur.com/9wBsmSx.jpg" alt="Consultor Hêmera" class="w-full h-full object-cover" referrerPolicy="no-referrer">
-                </div>
-                <div class="absolute -bottom-6 -right-6 w-48 h-48 bg-hemera-blue rounded-3xl -z-0"></div>
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-hemera-blue/5 blur-[120px] -z-10"></div>
-            </div>
-            
-            <div class="scroll-reveal">
-                <h2 class="text-3xl md:text-5xl font-montserrat font-bold mb-8">Sobre a <span class="text-hemera-light">Hêmera</span></h2>
-                <p class="text-lg text-white/80 mb-6 leading-relaxed font-opensans">
-                    A Hêmera é uma consultoria especializada em gestão para o setor de saúde pública, com mais de 9 anos de atuação dedicada a transformar ONG/OSC, OS, OSCIPs e Prefeituras em organizações eficientes.
-                </p>
-                <p class="text-white/60 mb-8 leading-relaxed">
-                    Ao longo de nossa trajetória, acumulamos experiência na gestão de dezenas de serviços — desde urgência e emergência até fundações estaduais e consórcios intermunicipais. Atuamos em 8 estados brasileiros sempre com o mesmo propósito: gerir recursos e pessoas com excelência.
-                </p>
-                
-                <div class="grid grid-cols-2 gap-6 mb-10">
-                    <div>
-                        <h4 class="text-hemera-light font-bold uppercase tracking-widest text-xs mb-2">Missão</h4>
-                        <p class="text-xs text-white/50">Impulsionar a excelência na gestão de serviços públicos de saúde.</p>
-                    </div>
-                    <div>
-                        <h4 class="text-hemera-light font-bold uppercase tracking-widest text-xs mb-2">Visão</h4>
-                        <p class="text-xs text-white/50">Ser referência nacional em consultoria de gestão de saúde pública.</p>
-                    </div>
-                </div>
-
-                <div class="p-6 rounded-2xl glass border border-white/5 flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-full bg-hemera-blue/20 flex items-center justify-center">
-                        <i data-lucide="award" class="text-hemera-light w-6 h-6"></i>
-                    </div>
-                    <div>
-                        <p class="text-sm font-bold">Fundador & Consultor Sênior</p>
-                        <p class="text-xs text-white/40">Especialista em Gestão de Saúde Pública</p>
-                    </div>
-                </div>
-            </div>
+      <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+        <div class="relative scroll-reveal">
+          <div
+            class="rounded-3xl overflow-hidden border border-white/10 aspect-[4/5] relative z-10"
+          >
+            <img
+              src="https://i.imgur.com/9wBsmSx.jpg"
+              alt="Consultor Hêmera"
+              class="w-full h-full object-cover"
+              referrerpolicy="no-referrer"
+            />
+          </div>
+          <div
+            class="absolute -bottom-6 -right-6 w-48 h-48 bg-hemera-blue rounded-3xl -z-0"
+          ></div>
+          <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-hemera-blue/5 blur-[120px] -z-10"
+          ></div>
         </div>
+
+        <div class="scroll-reveal">
+          <h2 class="text-3xl md:text-5xl font-montserrat font-bold mb-8">
+            Sobre a <span class="text-hemera-light">Hêmera</span>
+          </h2>
+          <p class="text-lg text-white/80 mb-6 leading-relaxed font-opensans">
+            A Hêmera é uma consultoria especializada em gestão para o setor de
+            saúde pública, com mais de 9 anos de atuação dedicada a transformar
+            ONG/OSC, OS, OSCIPs e Prefeituras em organizações eficientes.
+          </p>
+          <p class="text-white/60 mb-8 leading-relaxed">
+            Ao longo de nossa trajetória, acumulamos experiência na gestão de
+            dezenas de serviços — desde urgência e emergência até fundações
+            estaduais e consórcios intermunicipais. Atuamos em 8 estados
+            brasileiros sempre com o mesmo propósito: gerir recursos e pessoas
+            com excelência.
+          </p>
+
+          <div class="grid grid-cols-2 gap-6 mb-10">
+            <div>
+              <h4
+                class="text-hemera-light font-bold uppercase tracking-widest text-xs mb-2"
+              >
+                Missão
+              </h4>
+              <p class="text-xs text-white/50">
+                Impulsionar a excelência na gestão de serviços públicos de
+                saúde.
+              </p>
+            </div>
+            <div>
+              <h4
+                class="text-hemera-light font-bold uppercase tracking-widest text-xs mb-2"
+              >
+                Visão
+              </h4>
+              <p class="text-xs text-white/50">
+                Ser referência nacional em consultoria de gestão de saúde
+                pública.
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="p-6 rounded-2xl glass border border-white/5 flex items-center gap-4"
+          >
+            <div
+              class="w-12 h-12 rounded-full bg-hemera-blue/20 flex items-center justify-center"
+            >
+              <i data-lucide="award" class="text-hemera-light w-6 h-6"></i>
+            </div>
+            <div>
+              <p class="text-sm font-bold">Fundador & Consultor Sênior</p>
+              <p class="text-xs text-white/40">
+                Especialista em Gestão de Saúde Pública
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- PARTNERS SECTION -->
     <section id="parceiros" class="py-24 px-6 md:px-12 bg-card-bg">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-16 scroll-reveal">
-                <h2 class="text-3xl md:text-5xl font-montserrat font-bold mb-6">Nosso Parceiro <span class="text-hemera-light">Estratégico</span></h2>
-                <p class="text-white/60">Parceria construída para oferecer uma solução completa e integrada ao setor de saúde.</p>
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16 scroll-reveal">
+          <h2 class="text-3xl md:text-5xl font-montserrat font-bold mb-6">
+            Nosso Parceiro <span class="text-hemera-light">Estratégico</span>
+          </h2>
+          <p class="text-white/60">
+            Parceria construída para oferecer uma solução completa e integrada
+            ao setor de saúde.
+          </p>
+        </div>
+
+        <div
+          class="max-w-4xl mx-auto p-12 rounded-[40px] glass border border-white/5 relative overflow-hidden scroll-reveal"
+        >
+          <div
+            class="absolute top-0 right-0 w-64 h-64 bg-hemera-blue/5 blur-[100px]"
+          ></div>
+
+          <div class="flex flex-col md:flex-row items-center gap-12">
+            <div class="flex-shrink-0 flex items-center gap-6">
+              <div
+                class="w-24 h-24 bg-white/15 rounded-2xl flex items-center justify-center border border-white/10 overflow-hidden backdrop-blur-md shadow-lg shadow-black/10"
+              >
+                <img
+                  src="https://i.imgur.com/pRb4wfW.png"
+                  alt="Essencial Logo"
+                  class="w-16 h-auto"
+                  referrerpolicy="no-referrer"
+                />
+              </div>
+              <i data-lucide="plus" class="text-white/20"></i>
+              <div
+                class="w-24 h-24 bg-white/15 rounded-2xl flex items-center justify-center border border-white/10 backdrop-blur-md shadow-lg shadow-black/10"
+              >
+                <img
+                  src="https://i.imgur.com/NJwpNts.png"
+                  alt="Hêmera Logo"
+                  class="w-16 h-auto"
+                  referrerpolicy="no-referrer"
+                />
+              </div>
             </div>
 
-            <div class="max-w-4xl mx-auto p-12 rounded-[40px] glass border border-white/5 relative overflow-hidden scroll-reveal">
-                <div class="absolute top-0 right-0 w-64 h-64 bg-hemera-blue/5 blur-[100px]"></div>
-                
-                <div class="flex flex-col md:flex-row items-center gap-12">
-                    <div class="flex-shrink-0 flex items-center gap-6">
-                        <div class="w-24 h-24 bg-white/15 rounded-2xl flex items-center justify-center border border-white/10 overflow-hidden backdrop-blur-md shadow-lg shadow-black/10">
-                            <img src="https://i.imgur.com/pRb4wfW.png" alt="Essencial Logo" class="w-16 h-auto" referrerPolicy="no-referrer">
-                        </div>
-                        <i data-lucide="plus" class="text-white/20"></i>
-                        <div class="w-24 h-24 bg-white/15 rounded-2xl flex items-center justify-center border border-white/10 backdrop-blur-md shadow-lg shadow-black/10">
-                            <img src="https://i.imgur.com/NJwpNts.png" alt="Hêmera Logo" class="w-16 h-auto" referrerPolicy="no-referrer">
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <h3 class="text-2xl font-bold mb-4 font-montserrat">Essencial Gestão de Pessoas</h3>
-                        <p class="text-white/60 leading-relaxed mb-6">
-                            Enquanto a Hêmera cuida da gestão institucional e financeira, a Essencial fortalece o capital humano por meio de desenvolvimento e capacitação. Juntos, entregamos mais.
-                        </p>
-                        <a href="https://www.instagram.com/essencial.gestaopessoal/" target="_blank" class="inline-flex items-center gap-2 text-hemera-light font-bold uppercase tracking-widest text-xs group">
-                            Conheça a Essencial <i data-lucide="external-link" class="w-4 h-4 group-hover:translate-y-[-2px] group-hover:translate-x-[2px] transition-transform"></i>
-                        </a>
-                    </div>
-                </div>
+            <div>
+              <h3 class="text-2xl font-bold mb-4 font-montserrat">
+                Essencial Gestão de Pessoas
+              </h3>
+              <p class="text-white/60 leading-relaxed mb-6">
+                Enquanto a Hêmera cuida da gestão institucional e financeira, a
+                Essencial fortalece o capital humano por meio de desenvolvimento
+                e capacitação. Juntos, entregamos mais.
+              </p>
+              <a
+                href="https://www.instagram.com/essencial.gestaopessoal/"
+                target="_blank"
+                class="inline-flex items-center gap-2 text-hemera-light font-bold uppercase tracking-widest text-xs group"
+              >
+                Conheça a Essencial
+                <i
+                  data-lucide="external-link"
+                  class="w-4 h-4 group-hover:translate-y-[-2px] group-hover:translate-x-[2px] transition-transform"
+                ></i>
+              </a>
             </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- CONTACT SECTION -->
     <section id="contato" class="py-24 px-6 md:px-12 bg-dark-bg/50">
-        <div class="max-w-5xl mx-auto text-center">
-            <div class="scroll-reveal mb-16">
-                <h2 class="text-3xl md:text-5xl font-montserrat font-bold mb-6">Fale com a <span class="text-hemera-light">Hêmera</span></h2>
-                <p class="text-white/60 max-w-2xl mx-auto">Estamos prontos para transformar a gestão da sua organização. Entre em contato diretamente através dos nossos canais oficiais.</p>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- WhatsApp Card -->
-                <div class="scroll-reveal p-8 rounded-[32px] glass border border-white/5 hover:border-hemera-light/30 transition-all group">
-                    <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-8 h-8 fill-hemera-light">
-                            <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-5.6-2.8-23.6-8.7-45.3-28.1-16.9-15.1-28.3-33.7-31.6-39.4-3.2-5.6-.3-8.6 2.5-11.4 2.5-2.5 5.6-6.5 8.3-9.7 2.8-3.2 3.7-5.6 5.6-9.3 1.9-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 13.2 5.8 23.5 9.2 31.5 11.8 13.3 4.2 25.4 3.6 35 2.2 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
-                        </svg>
-                    </div>
-                    <h4 class="font-bold mb-2 uppercase text-xs tracking-widest text-hemera-light">WhatsApp</h4>
-                    <p class="text-xl font-bold mb-4 w-full">(16) 99753-2025</p>
-                    <a href="https://wa.me/5516997532025" target="_blank" class="inline-block bg-hemera-blue hover:bg-hemera-light text-white px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all">
-                        Conversar Agora
-                    </a>
-                </div>
-
-                <!-- Email Card -->
-                <div class="scroll-reveal p-8 rounded-[32px] glass border border-white/5 hover:border-hemera-light/30 transition-all group">
-                    <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                        <i data-lucide="mail" class="text-hemera-light w-8 h-8"></i>
-                    </div>
-                    <h4 class="font-bold mb-2 uppercase text-xs tracking-widest text-hemera-light">E-mail</h4>
-                    <p class="text-sm font-bold mb-6 break-all w-full">contato@hemeragestao.com.br</p>
-                    <a href="mailto:contato@hemeragestao.com.br" class="inline-block border border-white/10 hover:border-hemera-light text-white/60 hover:text-white px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all">
-                        Enviar E-mail
-                    </a>
-                </div>
-
-                <!-- Location Card -->
-                <div class="scroll-reveal p-8 rounded-[32px] glass border border-white/5 hover:border-hemera-light/30 transition-all group">
-                    <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
-                        <i data-lucide="map-pin" class="text-hemera-light w-8 h-8"></i>
-                    </div>
-                    <h4 class="font-bold mb-2 uppercase text-xs tracking-widest text-hemera-light">Localização</h4>
-                    <p class="text-lg font-bold mb-2 w-full">Catanduva — SP</p>
-                    <p class="text-[10px] text-white/30 font-bold uppercase tracking-widest">Atendimento Nacional</p>
-                </div>
-            </div>
-
-            <div class="mt-16 flex justify-center gap-6 scroll-reveal">
-                <a href="#" class="w-12 h-12 rounded-full glass flex items-center justify-center hover:bg-hemera-light transition-all group">
-                    <i data-lucide="instagram" class="w-6 h-6 group-hover:text-white"></i>
-                </a>
-                <a href="#" class="w-12 h-12 rounded-full glass flex items-center justify-center hover:bg-hemera-light transition-all group">
-                    <i data-lucide="facebook" class="w-6 h-6 group-hover:text-white"></i>
-                </a>
-                <a href="#" class="w-12 h-12 rounded-full glass flex items-center justify-center hover:bg-hemera-light transition-all group">
-                    <i data-lucide="linkedin" class="w-6 h-6 group-hover:text-white"></i>
-                </a>
-            </div>
+      <div class="max-w-5xl mx-auto text-center">
+        <div class="scroll-reveal mb-16">
+          <h2 class="text-3xl md:text-5xl font-montserrat font-bold mb-6">
+            Fale com a <span class="text-hemera-light">Hêmera</span>
+          </h2>
+          <p class="text-white/60 max-w-2xl mx-auto">
+            Estamos prontos para transformar a gestão da sua organização. Entre
+            em contato diretamente através dos nossos canais oficiais.
+          </p>
         </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <!-- WhatsApp Card -->
+          <div
+            class="scroll-reveal p-8 rounded-[32px] glass border border-white/5 hover:border-hemera-light/30 transition-all group"
+          >
+            <div
+              class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 448 512"
+                class="w-8 h-8 fill-hemera-light"
+              >
+                <path
+                  d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-5.6-2.8-23.6-8.7-45.3-28.1-16.9-15.1-28.3-33.7-31.6-39.4-3.2-5.6-.3-8.6 2.5-11.4 2.5-2.5 5.6-6.5 8.3-9.7 2.8-3.2 3.7-5.6 5.6-9.3 1.9-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 13.2 5.8 23.5 9.2 31.5 11.8 13.3 4.2 25.4 3.6 35 2.2 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"
+                />
+              </svg>
+            </div>
+            <h4
+              class="font-bold mb-2 uppercase text-xs tracking-widest text-hemera-light"
+            >
+              WhatsApp
+            </h4>
+            <p class="text-xl font-bold mb-4 w-full">(16) 99753-2025</p>
+            <a
+              href="https://wa.me/5516997532025"
+              target="_blank"
+              class="inline-block bg-hemera-blue hover:bg-hemera-light text-white px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all"
+            >
+              Conversar Agora
+            </a>
+          </div>
+
+          <!-- Email Card -->
+          <div
+            class="scroll-reveal p-8 rounded-[32px] glass border border-white/5 hover:border-hemera-light/30 transition-all group"
+          >
+            <div
+              class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform"
+            >
+              <i data-lucide="mail" class="text-hemera-light w-8 h-8"></i>
+            </div>
+            <h4
+              class="font-bold mb-2 uppercase text-xs tracking-widest text-hemera-light"
+            >
+              E-mail
+            </h4>
+            <p class="text-sm font-bold mb-6 break-all w-full">
+              contato@hemeragestao.com.br
+            </p>
+            <a
+              href="mailto:contato@hemeragestao.com.br"
+              class="inline-block border border-white/10 hover:border-hemera-light text-white/60 hover:text-white px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all"
+            >
+              Enviar E-mail
+            </a>
+          </div>
+
+          <!-- Location Card -->
+          <div
+            class="scroll-reveal p-8 rounded-[32px] glass border border-white/5 hover:border-hemera-light/30 transition-all group"
+          >
+            <div
+              class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform"
+            >
+              <i data-lucide="map-pin" class="text-hemera-light w-8 h-8"></i>
+            </div>
+            <h4
+              class="font-bold mb-2 uppercase text-xs tracking-widest text-hemera-light"
+            >
+              Localização
+            </h4>
+            <p class="text-lg font-bold mb-2 w-full">Catanduva — SP</p>
+            <p
+              class="text-[10px] text-white/30 font-bold uppercase tracking-widest"
+            >
+              Atendimento Nacional
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-16 flex justify-center gap-6 scroll-reveal">
+          <a
+            href="https://www.instagram.com/hemera.gestao/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-12 h-12 rounded-full glass flex items-center justify-center hover:bg-hemera-light transition-all group"
+          >
+            <i
+              data-lucide="instagram"
+              class="w-6 h-6 group-hover:text-white"
+            ></i>
+          </a>
+          <a
+            href="https://www.facebook.com/Hemeragestao"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-12 h-12 rounded-full glass flex items-center justify-center hover:bg-hemera-light transition-all group"
+          >
+            <i
+              data-lucide="facebook"
+              class="w-6 h-6 group-hover:text-white"
+            ></i>
+          </a>
+          <a
+            href="https://www.linkedin.com/in/jeanpaes"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-12 h-12 rounded-full glass flex items-center justify-center hover:bg-hemera-light transition-all group"
+          >
+            <i
+              data-lucide="linkedin"
+              class="w-6 h-6 group-hover:text-white"
+            ></i>
+          </a>
+        </div>
+      </div>
     </section>
 
     <!-- FOOTER -->
     <footer class="py-12 px-6 md:px-12 bg-card-bg border-t border-white/5">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid md:grid-cols-4 gap-12 mb-12">
-                <div class="md:col-span-2">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="bg-white/15 p-2 rounded-xl backdrop-blur-md border border-white/10 shadow-lg shadow-black/10">
-                            <img src="https://i.imgur.com/NJwpNts.png" alt="Hêmera Logo" class="h-12 w-auto" referrerPolicy="no-referrer">
-                        </div>
-                        <span class="font-montserrat font-bold text-lg tracking-[0.15em] uppercase">Hêmera</span>
-                    </div>
-                    <p class="text-white/40 text-sm max-w-sm">Consultoria especializada em gestão de saúde pública. Transformando desafios complexos em resultados mensuráveis e organizações seguras juridicamente.</p>
-                </div>
-                <div>
-                    <h4 class="font-bold mb-6 uppercase text-xs tracking-widest">Navegação</h4>
-                    <ul class="space-y-4 text-sm text-white/40">
-                        <li><a href="#home" class="hover:text-hemera-light transition-colors">Início</a></li>
-                        <li><a href="#sobre" class="hover:text-hemera-light transition-colors">Sobre a Hêmera</a></li>
-                        <li><a href="#solucoes" class="hover:text-hemera-light transition-colors">Nossas Soluções</a></li>
-                        <li><a href="#contato" class="hover:text-hemera-light transition-colors">Contato</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-bold mb-6 uppercase text-xs tracking-widest">Legal</h4>
-                    <ul class="space-y-4 text-sm text-white/40">
-                        <li><a href="#" class="hover:text-hemera-light transition-colors">Privacidade</a></li>
-                        <li><a href="#" class="hover:text-hemera-light transition-colors">Termos de Uso</a></li>
-                        <li><a href="#" class="hover:text-hemera-light transition-colors">Compliance</a></li>
-                    </ul>
-                </div>
+      <div class="max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-4 gap-12 mb-12">
+          <div class="md:col-span-2">
+            <div class="flex items-center gap-4 mb-6">
+              <div
+                class="bg-white/15 p-2 rounded-xl backdrop-blur-md border border-white/10 shadow-lg shadow-black/10"
+              >
+                <img
+                  src="https://i.imgur.com/NJwpNts.png"
+                  alt="Hêmera Logo"
+                  class="h-12 w-auto"
+                  referrerpolicy="no-referrer"
+                />
+              </div>
+              <span
+                class="font-montserrat font-bold text-lg tracking-[0.15em] uppercase"
+                >Hêmera</span
+              >
             </div>
-            
-            <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-                <p class="text-[10px] text-white/20 uppercase tracking-widest">© 2026 Hêmera · Todos os direitos reservados</p>
-                <div class="flex items-center gap-6">
-                    <span class="text-[10px] text-white/20 uppercase tracking-widest">Catanduva/SP — Brasil</span>
-                    <div class="w-px h-4 bg-white/10"></div>
-                    <a href="https://hemeragestao.com.br" class="text-[10px] text-hemera-light font-bold uppercase tracking-widest">hemeragestao.com.br</a>
-                </div>
-            </div>
+            <p class="text-white/40 text-sm max-w-sm">
+              Consultoria especializada em gestão de saúde pública.
+              Transformando desafios complexos em resultados mensuráveis e
+              organizações seguras juridicamente.
+            </p>
+          </div>
+          <div>
+            <h4 class="font-bold mb-6 uppercase text-xs tracking-widest">
+              Navegação
+            </h4>
+            <ul class="space-y-4 text-sm text-white/40">
+              <li>
+                <a
+                  href="#home"
+                  class="hover:text-hemera-light transition-colors"
+                  >Início</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#sobre"
+                  class="hover:text-hemera-light transition-colors"
+                  >Sobre a Hêmera</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#solucoes"
+                  class="hover:text-hemera-light transition-colors"
+                  >Nossas Soluções</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#contato"
+                  class="hover:text-hemera-light transition-colors"
+                  >Contato</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold mb-6 uppercase text-xs tracking-widest">
+              Legal
+            </h4>
+            <ul class="space-y-4 text-sm text-white/40">
+              <li>
+                <a
+                  href="#"
+                  onclick="
+                    document.getElementById('modal-privacidade').showModal();
+                    return false;
+                  "
+                  class="hover:text-hemera-light transition-colors"
+                  >Privacidade</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  onclick="
+                    document.getElementById('modal-termos').showModal();
+                    return false;
+                  "
+                  class="hover:text-hemera-light transition-colors"
+                  >Termos de Uso</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  onclick="
+                    document.getElementById('modal-compliance').showModal();
+                    return false;
+                  "
+                  class="hover:text-hemera-light transition-colors"
+                  >Compliance</a
+                >
+              </li>
+            </ul>
+          </div>
         </div>
+
+        <div
+          class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6"
+        >
+          <p class="text-[10px] text-white/20 uppercase tracking-widest">
+            © 2026 Hêmera · Todos os direitos reservados
+          </p>
+          <div class="flex items-center gap-6">
+            <span class="text-[10px] text-white/20 uppercase tracking-widest"
+              >Catanduva/SP — Brasil</span
+            >
+            <div class="w-px h-4 bg-white/10"></div>
+            <a
+              href="https://hemeragestao.com.br"
+              class="text-[10px] text-hemera-light font-bold uppercase tracking-widest"
+              >hemeragestao.com.br</a
+            >
+          </div>
+        </div>
+      </div>
     </footer>
 
     <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/5516997532025" target="_blank" class="fixed bottom-8 right-8 z-50 w-16 h-16 bg-[#25D366] rounded-full flex items-center justify-center shadow-2xl shadow-[#25D366]/40 hover:scale-110 transition-transform group">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-8 h-8 fill-white">
-            <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-5.6-2.8-23.6-8.7-45.3-28.1-16.9-15.1-28.3-33.7-31.6-39.4-3.2-5.6-.3-8.6 2.5-11.4 2.5-2.5 5.6-6.5 8.3-9.7 2.8-3.2 3.7-5.6 5.6-9.3 1.9-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 13.2 5.8 23.5 9.2 31.5 11.8 13.3 4.2 25.4 3.6 35 2.2 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
-        </svg>
-        <span class="absolute right-20 bg-white text-dark-bg px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-xl">Fale com um consultor</span>
+    <a
+      href="https://wa.me/5516997532025"
+      target="_blank"
+      class="fixed bottom-8 right-8 z-50 w-16 h-16 bg-[#25D366] rounded-full flex items-center justify-center shadow-2xl shadow-[#25D366]/40 hover:scale-110 transition-transform group"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 448 512"
+        class="w-8 h-8 fill-white"
+      >
+        <path
+          d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-5.6-2.8-23.6-8.7-45.3-28.1-16.9-15.1-28.3-33.7-31.6-39.4-3.2-5.6-.3-8.6 2.5-11.4 2.5-2.5 5.6-6.5 8.3-9.7 2.8-3.2 3.7-5.6 5.6-9.3 1.9-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 13.2 5.8 23.5 9.2 31.5 11.8 13.3 4.2 25.4 3.6 35 2.2 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"
+        />
+      </svg>
+      <span
+        class="absolute right-20 bg-white text-dark-bg px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-xl"
+        >Fale com um consultor</span
+      >
     </a>
 
     <script>
-        // Initialize Lucide Icons
-        lucide.createIcons();
+      // Initialize Lucide Icons
+      lucide.createIcons();
 
-        // GSAP Animations
-        gsap.registerPlugin(ScrollTrigger);
+      // GSAP Animations
+      gsap.registerPlugin(ScrollTrigger);
 
-        // Header scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
-            if (window.scrollY > 20) {
-                header.classList.add('glass', 'py-4');
-                header.classList.remove('py-6', 'bg-gradient-to-b', 'from-dark-bg/80', 'to-transparent');
-            } else {
-                header.classList.remove('glass', 'py-4');
-                header.classList.add('py-6', 'bg-gradient-to-b', 'from-dark-bg/80', 'to-transparent');
-            }
-        });
+      // Header scroll effect
+      window.addEventListener("scroll", () => {
+        const header = document.getElementById("header");
+        if (window.scrollY > 20) {
+          header.classList.add("glass", "py-4");
+          header.classList.remove(
+            "py-6",
+            "bg-gradient-to-b",
+            "from-dark-bg/80",
+            "to-transparent",
+          );
+        } else {
+          header.classList.remove("glass", "py-4");
+          header.classList.add(
+            "py-6",
+            "bg-gradient-to-b",
+            "from-dark-bg/80",
+            "to-transparent",
+          );
+        }
+      });
 
-        // Hero Entrance Animation
-        const heroTl = gsap.timeline();
-        heroTl.from('.hero-content .reveal-text', {
-            y: 100,
-            opacity: 0,
-            duration: 1.2,
-            stagger: 0.2,
-            ease: "power4.out"
+      // Hero Entrance Animation
+      const heroTl = gsap.timeline();
+      heroTl
+        .from(".hero-content .reveal-text", {
+          y: 100,
+          opacity: 0,
+          duration: 1.2,
+          stagger: 0.2,
+          ease: "power4.out",
         })
-        .from('.hero-content .inline-flex', {
+        .from(
+          ".hero-content .inline-flex",
+          {
             scale: 0.8,
             opacity: 0,
             duration: 0.8,
-            ease: "back.out(1.7)"
-        }, "-=1")
-        .from('header', {
+            ease: "back.out(1.7)",
+          },
+          "-=1",
+        )
+        .from(
+          "header",
+          {
             y: -100,
             opacity: 0,
             duration: 1,
-            ease: "power3.out"
-        }, "-=0.5");
+            ease: "power3.out",
+          },
+          "-=0.5",
+        );
 
-        // Scroll Reveal Animations
-        const revealElements = document.querySelectorAll('.scroll-reveal');
-        revealElements.forEach((el) => {
-            gsap.from(el, {
-                scrollTrigger: {
-                    trigger: el,
-                    start: "top 85%",
-                    toggleActions: "play none none none"
-                },
-                y: 50,
-                opacity: 0,
-                duration: 1,
-                ease: "power3.out"
+      // Scroll Reveal Animations
+      const revealElements = document.querySelectorAll(".scroll-reveal");
+      revealElements.forEach((el) => {
+        gsap.from(el, {
+          scrollTrigger: {
+            trigger: el,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+          y: 50,
+          opacity: 0,
+          duration: 1,
+          ease: "power3.out",
+        });
+      });
+
+      // Scroll Spy Logic
+      const sections = document.querySelectorAll("section[id]");
+      const navLinks = document.querySelectorAll("nav a");
+      const scrollSpyMobileLinks = document.querySelectorAll(".mobile-link");
+
+      function scrollSpy() {
+        const scrollY = window.pageYOffset;
+
+        sections.forEach((current) => {
+          const sectionHeight = current.offsetHeight;
+          const sectionTop = current.offsetTop - 100;
+          const sectionId = current.getAttribute("id");
+
+          if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+            document
+              .querySelector("nav a[href*=" + sectionId + "]")
+              ?.classList.add("text-hemera-light");
+            document
+              .querySelector("nav a[href*=" + sectionId + "]")
+              ?.classList.remove("text-white");
+          } else {
+            document
+              .querySelector("nav a[href*=" + sectionId + "]")
+              ?.classList.remove("text-hemera-light");
+            document
+              .querySelector("nav a[href*=" + sectionId + "]")
+              ?.classList.add("text-white");
+          }
+        });
+      }
+
+      window.addEventListener("scroll", scrollSpy);
+
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const targetId = this.getAttribute("href");
+          const target = document.querySelector(targetId);
+          if (target) {
+            // Close mobile menu if open
+            const mobileMenu = document.getElementById("mobile-menu");
+            mobileMenu.classList.add("translate-x-full");
+
+            target.scrollIntoView({
+              behavior: "smooth",
             });
+          }
         });
+      });
 
-        // Scroll Spy Logic
-        const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('nav a');
-        const scrollSpyMobileLinks = document.querySelectorAll('.mobile-link');
+      // Mobile Menu Logic
+      const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+      const closeMenuBtn = document.getElementById("close-menu-btn");
+      const mobileMenu = document.getElementById("mobile-menu");
+      const mobileLinks = document.querySelectorAll(".mobile-link");
 
-        function scrollSpy() {
-            const scrollY = window.pageYOffset;
+      mobileMenuBtn.addEventListener("click", () => {
+        mobileMenu.classList.remove("translate-x-full");
+      });
 
-            sections.forEach(current => {
-                const sectionHeight = current.offsetHeight;
-                const sectionTop = current.offsetTop - 100;
-                const sectionId = current.getAttribute('id');
+      closeMenuBtn.addEventListener("click", () => {
+        mobileMenu.classList.add("translate-x-full");
+      });
 
-                if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-                    document.querySelector('nav a[href*=' + sectionId + ']')?.classList.add('text-hemera-light');
-                    document.querySelector('nav a[href*=' + sectionId + ']')?.classList.remove('text-hemera-blue');
-                } else {
-                    document.querySelector('nav a[href*=' + sectionId + ']')?.classList.remove('text-hemera-light');
-                    document.querySelector('nav a[href*=' + sectionId + ']')?.classList.add('text-hemera-blue');
-                }
-            });
-        }
-
-        window.addEventListener('scroll', scrollSpy);
-
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const target = document.querySelector(targetId);
-                if (target) {
-                    // Close mobile menu if open
-                    const mobileMenu = document.getElementById('mobile-menu');
-                    mobileMenu.classList.add('translate-x-full');
-                    
-                    target.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
-            });
+      mobileLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          mobileMenu.classList.add("translate-x-full");
         });
-
-        // Mobile Menu Logic
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const closeMenuBtn = document.getElementById('close-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileLinks = document.querySelectorAll('.mobile-link');
-
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.remove('translate-x-full');
-        });
-
-        closeMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.add('translate-x-full');
-        });
-
-        mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('translate-x-full');
-            });
-        });
+      });
     </script>
-</body>
+    <!-- Modals -->
+    <dialog
+      id="modal-privacidade"
+      class="p-0 bg-transparent backdrop:bg-black/80 w-full max-w-2xl rounded-3xl m-auto shadow-2xl open:animate-in open:fade-in open:zoom-in-95"
+    >
+      <div class="glass border border-white/10 p-8 rounded-3xl text-white">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-2xl font-montserrat font-bold text-hemera-light">
+            Política de Privacidade
+          </h3>
+          <button
+            onclick="document.getElementById('modal-privacidade').close()"
+            class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
+          >
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+        <div
+          class="space-y-4 text-sm text-white/70 leading-relaxed font-opensans max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar"
+        >
+          <p>
+            Nossa Política de Privacidade estabelece como a Hêmera Gestão
+            coleta, utiliza, protege e trata os dados de nossos clientes e
+            parceiros, em total conformidade com a LGPD (Lei Geral de Proteção
+            de Dados - Lei nº 13.709/2018).
+          </p>
+          <p>
+            Mantemos protocolos rigorosos de segurança e confidencialidade. Os
+            dados por nós geridos são utilizados exclusivamente para suporte aos
+            projetos de consultoria, modelagem e gestão de saúde pública.
+          </p>
+          <p>
+            Para exercer seus direitos como titular de dados ou esclarecer
+            dúvidas sobre nossas práticas de privacidade, entre em contato
+            através de:
+            <a
+              href="mailto:contato@hemeragestao.com.br"
+              class="text-hemera-light underline"
+              >contato@hemeragestao.com.br</a
+            >.
+          </p>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog
+      id="modal-termos"
+      class="p-0 bg-transparent backdrop:bg-black/80 w-full max-w-2xl rounded-3xl m-auto shadow-2xl open:animate-in open:fade-in open:zoom-in-95"
+    >
+      <div class="glass border border-white/10 p-8 rounded-3xl text-white">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-2xl font-montserrat font-bold text-hemera-light">
+            Termos de Uso
+          </h3>
+          <button
+            onclick="document.getElementById('modal-termos').close()"
+            class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
+          >
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+        <div
+          class="space-y-4 text-sm text-white/70 leading-relaxed font-opensans max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar"
+        >
+          <p>
+            Ao acessar e interagir com as plataformas e serviços da Hêmera
+            Gestão, você concorda em respeitar os termos aqui descritos e a
+            legislação vigente.
+          </p>
+          <p>
+            Todo o conteúdo intelectual, metodologias, processos operacionais
+            padrão (POPs), e matrizes de risco desenvolvidos e apresentados em
+            nossos canais ou durante os projetos de consultoria são de
+            propriedade exclusiva da Hêmera Gestão.
+          </p>
+          <p>
+            A Hêmera se compromete com a excelência, ética e segurança jurídica
+            (Lei 13.019/2014), fornecendo diagnósticos precisos para ONG/OSC,
+            prestadores e entes públicos.
+          </p>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog
+      id="modal-compliance"
+      class="p-0 bg-transparent backdrop:bg-black/80 w-full max-w-2xl rounded-3xl m-auto shadow-2xl open:animate-in open:fade-in open:zoom-in-95"
+    >
+      <div class="glass border border-white/10 p-8 rounded-3xl text-white">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-2xl font-montserrat font-bold text-hemera-light">
+            Programa de Compliance
+          </h3>
+          <button
+            onclick="document.getElementById('modal-compliance').close()"
+            class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
+          >
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+        <div
+          class="space-y-4 text-sm text-white/70 leading-relaxed font-opensans max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar"
+        >
+          <p>
+            A integridade e a transparência são os alicerces da Hêmera Gestão.
+            Nosso programa de Compliance está estruturado para mitigar riscos,
+            garantir as melhores práticas de Governança Corporativa e assegurar
+            a obediência às determinações dos Tribunais de Contas e Ministérios
+            Públicos.
+          </p>
+          <p>
+            Todas as nossas relações institucionais são pautadas em nosso
+            <strong>Código de Ética e Conduta</strong>. Repudiamos qualquer
+            forma de corrupção, suborno, discriminação ou desvios de finalidade
+            em gestão de saúde pública.
+          </p>
+          <p>
+            Qualquer infração ou desconfiança deve ser reportada ao nosso canal
+            de ética, de forma anônima e segura, contatando diretamente nossos
+            diretores responsáveis pelo setor de governança.
+          </p>
+        </div>
+      </div>
+    </dialog>
+
+    <script>
+      // Dialog close on backdrop click
+      document.querySelectorAll("dialog").forEach((dialog) => {
+        dialog.addEventListener("click", (e) => {
+          const dialogDimensions = dialog.getBoundingClientRect();
+          if (
+            e.clientX < dialogDimensions.left ||
+            e.clientX > dialogDimensions.right ||
+            e.clientY < dialogDimensions.top ||
+            e.clientY > dialogDimensions.bottom
+          ) {
+            dialog.close();
+          }
+        });
+      });
+    </script>
+  </body>
 </html>
